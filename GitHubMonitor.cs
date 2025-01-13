@@ -14,21 +14,24 @@ namespace FunctionAppsDemo
     {
         [FunctionName("Function1")]
         public static async Task<IActionResult> Run(
-        [HttpTrigger(AuthorizationLevel.Function, /*"get",*/ "post", Route = null)] HttpRequest req, ILogger log)
+        [HttpTrigger(AuthorizationLevel.Function, "post", Route = null)] HttpRequest req, ILogger log)
         {
             log.LogInformation("Our GitHub Monitor processed an action.");
 
-            string name = req.Query["name"];
-
             string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
+            //dynamic data = JsonConvert.DeserializeObject<PersonModel>(requestBody);
             dynamic data = JsonConvert.DeserializeObject(requestBody);
-            name = name ?? data?.name;
 
-            string responseMessage = string.IsNullOrEmpty(name)
-                ? "This HTTP triggered function executed successfully. Pass a name in the query string or in the request body for a personalized response."
-                : $"Hello, {name}. This HTTP triggered function executed successfully.";
+            //TODO: Do something with the data.
+            log.LogInformation(requestBody);            
 
-            return new OkObjectResult(responseMessage);
+            return new OkResult();            
+
+            //string responseMessage = string.IsNullOrEmpty(name)
+            //    ? "This HTTP triggered function executed successfully. Pass a name in the query string or in the request body for a personalized response."
+            //    : $"Hello, {name}. This HTTP triggered function executed successfully.";
+
+            //return new OkObjectResult(responseMessage);
         }
     }
 }
