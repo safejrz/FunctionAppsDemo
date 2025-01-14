@@ -12,7 +12,7 @@ namespace GitHubMonitorApp;
 
 public static class GitHubMonitor
 {
-    [FunctionName("Function1")]
+    [FunctionName("GitHubMonitor")]
     public static async Task<IActionResult> Run(
         [HttpTrigger(AuthorizationLevel.Function, "post", Route = null)] HttpRequest req,
         ILogger log)
