@@ -22,7 +22,7 @@ public static class GitHubMonitor
         string name = req.Query["name"];
 
         string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-        dynamic data = JsonConvert.DeserializeObject<Rootobject>(requestBody);
+        dynamic data = JsonConvert.DeserializeObject<Rootobject>(requestBody); 
         name = name ?? data?.name;
 
         //TODO: Do something with the data.
