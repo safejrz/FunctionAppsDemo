@@ -8,33 +8,33 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 
-namespace FunctionAppsDemo
+namespace GitHubMonitorApp;
+
+public static class GitHubMonitor
 {
-    public static class GitHubMonitor
+    [FunctionName("Function1")]
+    public static async Task<IActionResult> Run(
+        [HttpTrigger(AuthorizationLevel.Function, "post", Route = null)] HttpRequest req,
+        ILogger log)
     {
-        [FunctionName("GitHubMonitor")]
-        public static async Task<IActionResult> Run(
-        [HttpTrigger(AuthorizationLevel.Function, "post", Route = null)] HttpRequest req, ILogger log)
-        {
-            log.LogInformation("Our GitHub Monitor processed an action.");
+        log.LogInformation("Our GitHub Monitor processed an action.");
 
-            string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-            var data = JsonConvert.DeserializeObject<Rootobject>(requestBody);
+        string name = req.Query["name"];
 
-            //TODO: Do something with the data.
-            log.LogInformation(requestBody);
+        string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
+        dynamic data = JsonConvert.DeserializeObject<Rootobject>(requestBody);
+        name = name ?? data?.name;
 
-            return new OkResult();
+        //TODO: Do something with the data.
+        log.LogInformation(requestBody);
 
-            //string responseMessage = string.IsNullOrEmpty(name)
-            //    ? "This HTTP triggered function executed successfully. Pass a name in the query string or in the request body for a personalized response."
-            //    : $"Hello, {name}. This HTTP triggered function executed successfully.";
+        string responseMessage = string.IsNullOrEmpty(name)
+            ? "This HTTP triggered function executed successfully. Pass a name in the query string or in the request body for a personalized response."
+            : $"Hello, {name}. This HTTP triggered function executed successfully.";
 
-            //return new OkObjectResult(responseMessage);
-        }
+        return new OkObjectResult(responseMessage);
     }
 }
-
 
 public class Rootobject
 {
