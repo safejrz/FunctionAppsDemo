@@ -26,7 +26,7 @@ public static class GitHubMonitor
         name = name ?? data?.name;
 
         //TODO: Do something with the data.
-        log.LogInformation(requestBody);
+        log.LogInformation(requestBody); 
 
         string responseMessage = string.IsNullOrEmpty(name)
             ? "This HTTP triggered function executed successfully. Pass a name in the query string or in the request body for a personalized response."
